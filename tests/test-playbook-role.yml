@@ -1,0 +1,604 @@
+---
+# Unify tests, from root folder run: ./testme.sh.
+
+- name: Ansible role to unify collections - tests.
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+# Setup.
+  - name: Setup requirements.
+    debug:
+      msg:
+        - '------------------------------------------------------------------'
+        - 'Setting up requirements ...'
+        - '------------------------------------------------------------------'
+
+  - name: Downloading files.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Downloading files ...'
+        - '__________________________________________________________________'
+
+  - name: Download example-conf.yml file.
+    get_url:
+      url: https://is.gd/zF7jzp
+      dest: /tmp/example-conf.yml
+      force: true
+
+  - name: Download example-conf-b.yml file.
+    get_url:
+      url: https://is.gd/8RGMvO
+      dest: /tmp/example-conf-b.yml
+      force: true
+
+  - name: Test unify role.
+    debug:
+      msg:
+        - '------------------------------------------------------------------'
+        - 'Testing unify role ...'
+        - '------------------------------------------------------------------'
+
+  - name: Test unify role with null.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing unify role with null ...'
+        - ' ,xXXXXx'
+        - ',XXXXXXXX'
+        - 'XXXXXXXXXX'
+        - '````XX```'
+        - '    XX'
+        - '    XX'
+        - '    XX'
+        - '__________________________________________________________________'
+
+
+  - name: Unify collections passing null.
+    import_role:
+      name: constrict0r.unify
+    vars:
+      validate: false
+      update: false
+      items: null
+      titles: null
+      expand: null
+      secondary: false
+    failed_when: unified is not variable_empty
+
+  - name: Test unify role with none.
+    debug:
+      msg:
+        - '_________________________________________________________________'
+        - 'Testing unify role with none ...'
+        - '   __.......__'
+        - ' .`           `.'
+        - ':               :'
+        - ':               :'
+        - ' `.._________..`'
+        - '      :   :'
+        - '      :   :'
+        - '      :   :'
+        - '      `...`'
+        - '_________________________________________________________________'
+
+  - name: Unify collections passing none.
+    import_role:
+      name: constrict0r.unify
+    vars:
+      validate: false
+      update: false
+      items:
+      titles:
+      expand:
+      secondary: false
+    failed_when: unified is not variable_empty
+
+  - name: Test unify role with undefined.
+    debug:
+      msg:
+        - '..................................................................'
+        - 'Testing unify role with undefined ...'
+        - '         ___..._'
+        - '    _,--`       ``-.'
+        - '  ,`.  .            \'
+        - ',/:. .     .       .'
+        - '|;..  .      _..--'
+        - '`--:...-,-```\'
+        - '        |:.  `.'
+        - '        l;.   l'
+        - '        `|:.   |'
+        - '         |:.   `.,'
+        - '        .l;.    j, ,'
+        - '     `. \`;:.   //,/'
+        - '      .\\)`;,|\`/('
+        - '       ` `    `(,'
+        - '..................................................................'
+
+  - name: Unify collections passing undefined.
+    import_role:
+      name: constrict0r.unify
+    vars:
+      validate: false
+      update: false
+      items: "{{ undefined_variable }}"
+      titles: "{{ undefined_variable }}"
+      expand: "{{ undefined_variable }}"
+      secondary: false
+    failed_when: unified is not variable_empty
+
+  - name: Test unify role with empty.
+    debug:
+      msg:
+        - '..................................................................'
+        - 'Testing unify role with empty ...'
+        - '        __....._' 
+        - '     .``         ``' 
+        - '   ."               `'  
+        - '  .                   ' 
+        - ' .       __...__       '
+        - '. _.--```       ```--._ '
+        - ':`                     `'
+        - ' `-.__    :    :   __.-`'
+        - '      ```-:    :-```' 
+        - '         J     '
+        - '         :     '
+        - '        J       '
+        - '        :       '
+        - '        `._____.'
+        - '..................................................................'
+
+  - name: Unify collections passing empty.
+    import_role:
+      name: constrict0r.unify
+    vars:
+      validate: false
+      update: false
+      items: ''
+      titles: ''
+      expand: ''
+      secondary: false
+    failed_when: unified is not variable_empty
+
+  - name: Test unify role with NON-empty.
+    debug:
+      msg:
+        - '..................................................................'
+        - 'Testing unify role with NON-empty ...'
+        - '        __....._'
+        - '     .`` _  o    ``'
+        - '   ." O (_)     () o`'
+        - '  .           O        '
+        - ' . ()   o__...__    O   '
+        - '. _.--```       ```--._ '
+        - ':`                     `'
+        - ' `-.__    :    :   __.-`'
+        - '      ```-:    :-```'
+        - '         J     '
+        - '         :     '
+        - '        J       '
+        - '        :       '
+        - '        `._____.'
+        - '..................................................................'
+
+  - name: Test unify role with non-empty - example-conf.
+    debug:
+      msg:
+        - '------------------------------------------------------------------'
+        - 'Testing unify role with non-empty - example-conf ...'
+        - '      ----------'
+        - '    /  (_)_      \'
+        - '  /)     (_) (_)  \'
+        - ' |                 |'
+        - '| _   (_)   _   (_) |'
+        - '|(_)  _  (_) _   (_)|'
+        - '|___(_)_____(_)_____|'
+        - ' |||||||||||||||||||'
+        - '        |   |'
+        - '        |   |'
+        - '        |   |'
+        - '        |___|'
+        - '------------------------------------------------------------------'
+
+  - name: Unify collections passing non-empty - example-conf.
+    import_role:
+      name: constrict0r.unify
+    vars:
+      validate: false
+      update: false
+      items:
+        - fulva
+        - vaginata
+        - /tmp/example-conf.yml
+      titles: items
+      expand: true
+      secondary: false
+    failed_when: unified is variable_empty
+
+  - name: Verify fulva added to collections.
+    command: "echo {{ unified }}"
+    register: unified_result
+    failed_when: unified_result.stdout is not search('fulva')
+
+  - name: Verify phalloides added to collection.
+    command: "echo {{ unified }}"
+    register: unified_collection_result
+    failed_when: unified_result.stdout is not search('phalloides')
+
+  - name: Test unify role with non-empty - example-conf-b.
+    debug:
+      msg:
+        - '------------------------------------------------------------------'
+        - 'Testing unify role with non-empty - example-conf-b ...'
+        - '  .-```-.'
+        - ' /* * * *\'
+        - ':_.-:`:-._;'
+        - '    (_)'
+        - ' ||/(_)\||'
+        - '------------------------------------------------------------------'
+
+  - name: Unify collections passing non-empty - example-conf-b.
+    import_role:
+      name: constrict0r.unify
+    vars:
+      validate: false
+      update: false
+      items: [rubrovolvata, augusta, /tmp/example-conf-b.yml]
+      titles: items
+      expand: true
+      secondary: false
+    failed_when: unified is variable_empty
+    become: yes
+
+  - name: Verify calyptroderma added to collections.
+    command: "echo {{ unified }}"
+    register: unified_result
+    failed_when: unified_result.stdout is not search('calyptroderma')
+
+  - name: Verify rubrovolvata added to collection.
+    command: "echo {{ unified }}"
+    register: unified_result
+    failed_when: unified_result.stdout is not search('rubrovolvata')
+
+  - name: Test unify role with non-empty - collections by url.
+    debug:
+      msg:
+        - '------------------------------------------------------------------'
+        - 'Testing unify role with non-empty - collections by url ...'
+        - '  n'
+        - ' / `\'
+        - '(___:)'
+        - ' ````'
+        - '  ||'
+        - '  ||'
+        - '------------------------------------------------------------------'
+
+  - name: Unify collections passing non-empty - collections by url.
+    import_role:
+      name: constrict0r.unify
+    vars:
+      validate: false
+      update: false
+      items:
+        - https://is.gd/zF7jzp
+        - https://is.gd/8RGMvO
+      titles: items
+      expand: true
+      secondary: false
+    become: true
+    failed_when: unified is variable_empty
+
+  - name: Verify bisporigera added to collection.
+    command: "echo {{ unified }}"
+    register: unified_result
+    failed_when: unified_result.stdout is not search('bisporigera')
+
+  - name: Verify calyptroderma added to collections.
+    command: "echo {{ unified }}"
+    register: unified_result
+    failed_when: unified_result.stdout is not search('calyptroderma')
+
+  - name: Test unify role with non-empty - secondary collection.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing unify role with non-empty - secondary collection ...'
+        - '      ,.'
+        - '     J;`.'
+        - '    iyi.`.'
+        - '   j?7;. :'
+        - '  fclu:.` :'
+        - ' dE2Xvi;. `.'
+        - 'JGL56bhx;.";'
+        - '4KPY^f:l"`-;'
+        - '  """l:;-""'
+        - '     `; \'
+        - '     ." ;'
+        - '    /"."'
+        - '   f ."'
+        - '   `. \'
+        - '    `-"'
+        - '__________________________________________________________________'
+
+  - name: Unify collections passing non-empty - secondary collection.
+    import_role:
+      name: constrict0r.unify
+    vars:
+      validate: false
+      update: false
+      items: []
+      titles: []
+      expand: false
+      secondary: true
+      items_b:
+        - [1, 2, 3]
+        - [4, 5, 6]
+        - https://is.gd/8RGMvO
+      titles_b: items
+      expand_b: true
+    become: true
+    failed_when: unified_b is variable_empty
+
+  - name: Verify calyptroderma added to collection B.
+    command: "echo {{ unified_b }}"
+    register: unified_result
+    failed_when: unified_result.stdout is not search('calyptroderma')
+
+  - name: Verify number 1 added to collection B.
+    command: "echo {{ unified_b }}"
+    register: unified_result
+    failed_when: unified_result.stdout is not search('1')
+
+  - name: Verify number 6 added to collection B.
+    command: "echo {{ unified_b }}"
+    register: unified_result
+    failed_when: unified_result.stdout is not search('6')
+
+  - name: Test unify role with non-empty - do not expand items.
+    debug:
+      msg:
+        - '------------------------------------------------------------------'
+        - 'Testing unify role with non-empty - do not expand items ...'
+        - '  n'
+        - ' / `\'
+        - '(___:)'
+        - ' """"'
+        - '  ||'
+        - '  ||'
+        - '  ))'
+        - ' //'
+        - '(('
+        - ' \\'
+        - '  ))'
+        - '  ||'
+        - '------------------------------------------------------------------'
+
+  - name: Unify collections passing non-empty - do not expand items.
+    import_role:
+      name: constrict0r.unify
+    vars:
+      validate: false
+      update: false
+      items: https://is.gd/zF7jzp
+      expand: false
+      secondary: false
+
+  - name: Verify URL added to collection.
+    command: "echo {{ unified }}"
+    register: unified_result
+    failed_when: unified_result.stdout is not search('https://is.gd/zF7jzp')
+
+  - name: Test unify role with non-empty - expand items.
+    debug:
+      msg:
+        - '------------------------------------------------------------------'
+        - 'Testing unify role with non-empty - expand items ...'
+        - '        m'
+        - '       / \'
+        - '      .   \'
+        - '     ( O   \'
+        - '    /  _   O\'
+        - '   /  (_)    .'
+        - '  .       O   \'
+        - ' (__O__________)'
+        - '  \((((())))))/'
+        - '      /  X'
+        - '     /   )'
+        - '    |   /'
+        - '_.n.(___)nmm._.,n._'
+        - '------------------------------------------------------------------'
+
+  - name: Unify collections passing non-empty - expand items.
+    import_role:
+      name: constrict0r.unify
+    vars:
+      validate: false
+      update: false
+      items: https://is.gd/8RGMvO
+      titles: items
+      expand: true
+      secondary: false
+    become: true
+
+  - name: Verify calyptroderma added to collection.
+    command: "echo {{ unified }}"
+    register: unified_result
+    failed_when: unified_result.stdout is not search('calyptroderma')
+
+  - name: Test unify role with non-empty - expand global - not item.
+    debug:
+      msg:
+        - '------------------------------------------------------------------'
+        - 'Testing unify role with non-empty - expand global - not item ...'
+        - '           ____'
+        - '       _.-"78o `"`"--._'
+        - '   ,o888o.  .o888o,   ""-.'
+        - ' ,88888P  `78888P..______.]'
+        - '/_..__..----""        __."'
+        - '`-._       /""| _..-""'
+        - '    "`-----\  `\'
+        - '            |   ;.-""--..'
+        - '            | ,8o.  o88. `.'
+        - '            `;888P  `788P  :'
+        - '      .o""-.|`-._         ./'
+        - '     J88 _.-/    ";"-P----"'
+        - '     `--"\`|     /  /'
+        - '         | /     |  |'
+        - '         \|     /   |'
+        - '          `-----`---"'
+        - '------------------------------------------------------------------'
+
+  - name: Unify collections passing non-empty - expand global - not item.
+    import_role:
+      name: constrict0r.unify
+    vars:
+      validate: false
+      update: false
+      items:
+        - item_path: https://is.gd/zF7jzp
+          item_expand: false
+      expand: true
+      secondary: false
+
+  - name: Verify URL added to collection.
+    command: "echo {{ unified }}"
+    register: unified_result
+    failed_when:
+      - unified_result.stdout is not search('https://is.gd/zF7jzp')
+      - unified_result.stdout is search('expand')
+
+  - name: Test unify role with non-empty - expand item - not global.
+    debug:
+      msg:
+        - '------------------------------------------------------------------'
+        - 'Testing unify role with non-empty - expand item - not global ...'
+        - '         .8.'
+        - '         888'
+        - '         888l'
+        - '        j8888.'
+        - '       .888888.'
+        - '      .88888888.'
+        - '    .d8888888888b.'
+        - '  .d88888888888888b.'
+        - ' .888888888888888888b.'
+        - '.888888888888888888888'
+        - '8888888888888888888888'
+        - '888P--------------4888'
+        - '`P"     .    .     `q"'
+        - ' `-..____:  :____..-"'
+        - '         :  :'
+        - '         :  :'
+        - '         :  :'
+        - '         :  :'
+        - '         :  :'
+        - '       \(/\\)\/'
+        - '------------------------------------------------------------------'
+
+  - name: Unify collections passing non-empty - expand item - not global.
+    import_role:
+      name: constrict0r.unify
+    vars:
+      validate: false
+      update: false
+      items:
+        - item_path: https://is.gd/zF7jzp
+          item_expand: true
+      titles: items
+      expand: false
+      secondary: false
+
+  - name: Verify gemmata added to collection.
+    command: "echo {{ unified }}"
+    register: unified_result
+    failed_when: unified_result.stdout is not search('gemmata')
+
+  - name: Test unify role with non-empty URL not expand - empty collection.
+    debug:
+      msg:
+        - '------------------------------------------------------------------'
+        - 'Testing unify role with non-empty URL not expand - empty col ...'
+        - '         .8.'
+        - '         888'
+        - '         888l'
+        - '        j`488.'
+        - '       .  d888.'
+        - '      .88888888.'
+        - '    .d88888P"`48b.'
+        - '  .d8P""488b  d888b.'
+        - ' .888    88888888888b.'
+        - '.8888b..d88888888" `88'
+        - '88888888888888888. ,88'
+        - '888P--------------4888'
+        - '`P"     .    .     `q"'
+        - ' `-..____:  :____..-"'
+        - '         :  :'
+        - '         :  :'
+        - '         :  :'
+        - '         :  :'
+        - '         :  :'
+        - '       \(/\\)\/'
+        - '------------------------------------------------------------------'
+
+  - name: Unify collections passing non-empty URL not expand - empty col.
+    import_role:
+      name: constrict0r.unify
+    vars:
+      validate: false
+      update: false
+      items:
+        - https://gitlab.com/huertico/server
+        - []
+      expand: false
+      secondary: false
+
+  - name: Verify huertico added to collection.
+    command: "echo {{ unified }}"
+    register: unified_result
+    failed_when: unified_result.stdout is not search('huertico')
+
+  - name: Test unify role using validate, update and upgrade.
+    debug:
+      msg:
+        - '------------------------------------------------------------------'
+        - 'Testing unify role validating and updating ...'
+        - '        ,-.'
+        - '       ,"   `.'
+        - '     ,"       `.'
+        - '   ,"           `.'
+        - ' ,"               `.'
+        - '"___________________`'
+        - '         : :'
+        - '         : :'
+        - '         ` `'
+        - '          \ \'
+        - '           . .'
+        - '           ; ;'
+        - '          . .'
+        - '         . .'
+        - '         ; :'
+        - '        .   .'
+        - '------------------------------------------------------------------'
+
+  - name: Unify collections validating and updating.
+    import_role:
+      name: constrict0r.unify
+    vars:
+      validate: true
+      update: true
+      items: []
+      expand: false
+      secondary: false
+    become: true
+
+# Cleanup files.
+  - name: Cleanup /tmp/example-conf.yml file.
+    file:
+      path: /tmp/example-conf.yml
+      state: absent
+
+  - name: Cleanup /tmp/example-conf-b.yml file.
+    file:
+      path: /tmp/example-conf-b.yml
+      state: absent

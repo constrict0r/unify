@@ -1,0 +1,62 @@
+@startuml
+'Use plantuml to view this file as an image: http://plantuml.com'
+
+skinparam monochrome true
+
+start
+
+if (item is not empty?) then (yes)
+
+  if (item is URL?) then (yes)
+    :Download file to /tmp/url_collection;
+    :Set item=/tmp/url_collection;
+  else (no)
+  endif
+
+  if (item is path?) then (yes)
+
+    :Load items from path;
+
+    if (loaded not empty?) then (yes)
+
+      repeat
+
+        if (title not empty?) then (yes)
+
+          if (loaded[title] is collection?) then (yes)
+
+            :Unify collection;
+
+          else (no)
+
+            :Unify item;
+
+          endif
+
+        else (no)
+        endif
+
+      repeat while (title in titles?)
+
+    else (no)
+    endif
+
+  else (no)
+
+    if (item not in unified?) (yes)
+
+      :Append item to unified;
+
+    else (no)
+    endif
+
+  endif
+
+else (no)
+endif
+
+:return unified;
+
+end
+
+@enduml

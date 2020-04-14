@@ -1,0 +1,24 @@
+@startuml
+'Use plantuml to view this file as an image: http://plantuml.com'
+start
+
+skinparam monochrome true
+
+:Set unified = [];
+
+if (configuration is variable_collection?) then (yes)
+
+  repeat
+    :Unify item;
+  repeat while (item in configuration?)
+
+else (no)
+  :Unify item;
+
+endif
+
+stop
+
+end
+
+@enduml

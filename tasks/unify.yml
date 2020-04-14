@@ -1,0 +1,96 @@
+---
+- name: Unify collections.
+  debug:
+    msg:
+      - '--------------------------------------------------------------------'
+      - 'Unifying  collections ...'
+      - '--------------------------------------------------------------------'
+
+- name: Handle current_items variable.
+  debug:
+    msg:
+      - '....................................................................'
+      - 'Handling current_items variable ...'
+      - '....................................................................'
+
+- name: Set items as empty.
+  set_fact:
+    i: []
+
+- name: Copy current_items variable.
+  include_tasks: copy.yml
+  vars:
+    variable_name: 'items'
+    variable_value: "{{ current_items }}"
+
+- name: Set i = current_items.
+  set_fact:
+    i: "{{ current_items }}"
+  when: variable_copy is not variable_empty
+
+- name: Handle current_titles variable.
+  debug:
+    msg:
+      - '--------------------------------------------------------------------'
+      - 'Handling current_titles variable ...'
+      - '--------------------------------------------------------------------'
+
+- name: Set t as empty.
+  set_fact:
+    t: []
+
+- name: Copy current_titles variable.
+  include_tasks: copy.yml
+  vars:
+    variable_name: 'titles'
+    variable_value: "{{ current_titles }}"
+
+- name: Set t = current_titles.
+  set_fact:
+    t: "{{ current_titles }}"
+  when: variable_copy is not variable_empty
+
+- name: Handle current_expand variable.
+  debug:
+    msg:
+      - '--------------------------------------------------------------------'
+      - 'Handling current_expand variable ...'
+      - '--------------------------------------------------------------------'
+
+- name: Set e as false.
+  set_fact:
+    e: false
+
+- name: Copy current_expand variable.
+  include_tasks: copy.yml
+  vars:
+    variable_name: 'expand'
+    variable_value: "{{ current_expand }}"
+
+- name: Set e = true.
+  set_fact:
+    e: true
+  when:
+    - variable_copy is not variable_empty
+    - variable_copy is variable_boolean_true
+
+- name: Unify collections.
+  debug:
+    msg:
+      - '--------------------------------------------------------------------'
+      - 'Unifying collections ...'
+      - '--------------------------------------------------------------------'
+
+- name: Unify collections.
+  unify:
+    items: "{{ i }}"
+    titles: "{{ t }}"
+    expand: "{{ e }}"
+  register: unified_register
+  become: false
+  changed_when: false
+  failed_when: unified_register.unified is not defined
+
+- name: Set unified variable.
+  set_fact:
+    unified: "{{ unified_register.unified }}"

@@ -1,0 +1,90 @@
+---
+- name: Display Role Details.
+  debug:
+    msg:
+      - '===================================================================='
+      - 'constrict0r.unify'
+      - 'Unify collections into a single unified collection.'
+      - '===================================================================='
+
+- name: Verify requirements.
+  debug:
+    msg:
+      - '____________________________________________________________________'
+      - 'Verifying requirements ...'
+      - '____________________________________________________________________'
+
+- name: Verify requirements installed - Jinja2, PyYAML, requests.
+  pip:
+    name:
+      - Jinja2
+      - PyYAML
+      - requests
+    state: present
+  become: false
+  changed_when: false
+  check_mode: false
+
+- name: Handle variables.
+  include_tasks: variable.yml
+  when: not ansible_check_mode
+
+- name: Build secondary collection.
+  debug:
+    msg:
+      - '____________________________________________________________________'
+      - 'Secondary collection ...'
+      - '____________________________________________________________________'
+
+- name: Set unify_b = false.
+  set_fact:
+    unify_b: false
+
+- name: Copy secondary variable.
+  include_tasks: copy.yml
+  vars:
+    variable_name: 'secondary'
+    variable_value: "{{ secondary | default(false) }}"
+
+- name: Set unify_b = secondary.
+  set_fact:
+    unify_b: true
+  when:
+    - variable_copy is not variable_empty
+    - variable_copy is variable_boolean_true
+
+- name: Build unified_b.
+  include_tasks: unify.yml
+  vars:
+    current_items: "{{ items_b | default([]) }}"
+    current_titles: "{{ titles_b | default([]) }}"
+    current_expand: "{{ expand_b | default(false) }}"
+  when: unify_b | bool
+
+- name: Define unified_b.
+  set_fact:
+    unified_b: "{{ unified }}"
+  when: unify_b | bool
+
+- name: Show result.
+  debug:
+    var: unified_b
+  when: unify_b | bool
+
+- name: Build primary collection.
+  debug:
+    msg:
+      - '____________________________________________________________________'
+      - 'Primary collection ...'
+      - '____________________________________________________________________'
+
+- name: Build unified.
+  include_tasks: unify.yml
+  vars:
+    current_items: "{{ items | default([]) }}"
+    current_titles: "{{ titles | default([]) }}"
+    current_expand: "{{ expand | default(false) }}"
+
+- name: Show result.
+  debug:
+    var: unified

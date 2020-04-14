@@ -1,0 +1,21 @@
+@startuml
+'Use plantuml to view this file as an image: http://plantuml.com'
+
+skinparam monochrome true
+
+start
+
+repeat
+
+  if (item is not collection?) then (yes)
+    :Unify item;
+  else (no)
+
+    :Unify collection;
+  endif
+
+repeat while (items in collection?)
+
+end
+
+@enduml

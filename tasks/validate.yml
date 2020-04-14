@@ -1,0 +1,93 @@
+---
+- name: Validations.
+  debug:
+    msg:
+      - '--------------------------------------------------------------------'
+      - 'Applying validations ...'
+      - '--------------------------------------------------------------------'
+
+- name: Get current username.
+  command: whoami
+  register: username_current_whoami
+  become: false
+  changed_when: false
+  check_mode: false
+
+- name: Verify if user can become root.
+  debug:
+    msg:
+      - '--------------------------------------------------------------------'
+      - 'The current user cannot adquire administrative (root) permissions.'
+      - 'Is not possible to execute the process ... Aborting ...'
+      - '                             ____'
+      - '                     __,-~~/~    `---.'
+      - '                   _/_,---(      ,    )'
+      - '               __ /        <    /   )  \___'
+      - '- ------===;;;|====------------------===;;;===----- -  -'
+      - '                  \/  ~|~|~|~|~|~\~|~)~|/'
+      - '                  (_ (   \  (     >    \)'
+      - '                   \_( _ <         >_>:'
+      - '                      ~ `-i| ::>|--:'
+      - '                          I;|.|.|'
+      - '                         <|i::|i||.'
+      - '                        (| ^:|:-| |)'
+      - '--------------------------------------------------------------------'
+  when: username_current_whoami.stdout is not user_root
+  failed_when: username_current_whoami.stdout is not user_root
+
+- name: Update APT cache as root.
+  apt:
+    update_cache: true
+  register: result
+  retries: 2
+  until: result is success
+  changed_when: false
+  when: "'root' == username_current_whoami.stdout"
+
+- name: Update APT cache using become.
+  apt:
+    update_cache: true
+  register: result
+  retries: 2
+  until: result is success
+  become: true
+  changed_when: false
+  when: "'root' != username_current_whoami.stdout"
+
+- name: Ensure sudo package is installed as root.
+  apt:
+    name: sudo
+    state: present
+  register: result
+  retries: 2
+  until: result is success
+  when: "'root' == username_current_whoami.stdout"
+
+- name: Ensure sudo package is installed using become.
+  apt:
+    name: sudo
+    state: present
+  register: result
+  retries: 2
+  until: result is success
+  become: true
+  when: "'root' != username_current_whoami.stdout"
+
+- name: Add current user to sudoers.d as root.
+  lineinfile:
+    path: "/etc/sudoers.d/{{ username_current_whoami.stdout }}"
+    line: "{{ username_current_whoami.stdout }} ALL=(ALL:ALL) ALL"
+    state: present
+    mode: 0440
+    create: true
+  when: "'root' == username_current_whoami.stdout"
+
+- name: Add current user to sudoers.d using become.
+  lineinfile:
+    path: "/etc/sudoers.d/{{ username_current_whoami.stdout }}"
+    line: "{{ username_current_whoami.stdout }} ALL=(ALL:ALL) ALL"
+    state: present
+    mode: 0440
+    create: true
+  become: true
+  when: "'root' != username_current_whoami.stdout"

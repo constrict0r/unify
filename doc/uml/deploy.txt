@@ -1,0 +1,27 @@
+@startuml
+'Use plantuml to view this file as an image: http://plantuml.com'
+
+skinparam monochrome true
+
+component unify {
+
+  package utilz.py {
+    rectangle user_root
+    rectangle variable_boolean
+    rectangle variable_boolean_true
+    rectangle variable_collection
+    rectangle variable_empty
+    rectangle variable_path
+    rectangle variable_url
+    rectangle variable_url_existent
+  }
+
+  package unify.py {
+    rectangle unify_collection
+    rectangle unify_item
+    rectangle variable_boolean_value
+  }
+
+}
+
+@enduml

@@ -1,0 +1,8 @@
+---
+# Example configuration file.
+
+items:
+  - name: calyptroderma
+    trait: psychoactive
+  - name: muscaria
+    trait: psychoactive

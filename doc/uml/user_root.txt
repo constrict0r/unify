@@ -1,0 +1,29 @@
+@startuml
+'Use plantuml to view this file as an image: http://plantuml.com'
+
+skinparam monochrome true
+
+start
+
+if (current user == root?) then (yes)
+  :Return True;
+  end
+
+else (no)
+  if (/etc/sudoers.d/username exists?) then (yes)
+    :Return True;
+    end
+
+  else (no)
+    if (user in groups sudo or root?) then (yes)
+      :Return True;
+      end
+
+    else (no)
+      :Return False;
+      end
+    endif
+
+endif
+
+@enduml

@@ -1,0 +1,973 @@
+---
+# util tests, from root folder run: ./testme.sh.
+
+- name: Ansible plugin with utilities - tests.
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+# Setup.
+  - name: Setup requirements.
+    debug:
+      msg:
+        - '------------------------------------------------------------------'
+        - 'Setting up requirements ...'
+        - '------------------------------------------------------------------'
+
+  - name: Define variables.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Defining variables ...'
+        - '__________________________________________________________________'
+
+  - name: Define null variable.
+    set_fact:
+      null_var: null
+
+  - name: Define empty variable.
+    set_fact:
+      empty_var: ''
+
+# Sphinx: plugin-util-variable-empty-01-start
+  - name: Define non-empty variable.
+    set_fact:
+      non_empty_var: 'non-empty-value'
+# Sphinx: plugin-util-variable-empty-01-end
+
+# Sphinx: plugin-util-variable-boolean-true-01-start
+  - name: Define boolean false variable.
+    set_fact:
+      boolean_false_var: false
+# Sphinx: plugin-util-variable-boolean-true-01-end
+
+# Sphinx: plugin-util-variable-boolean-01-start
+  - name: Define boolean true variable.
+    set_fact:
+      boolean_true_var: true
+# Sphinx: plugin-util-variable-boolean-01-end
+
+# Sphinx: plugin-util-variable-path-01-start
+  - name: Define path variable.
+    set_fact:
+      path_var: /bin/ls
+# Sphinx: plugin-util-variable-path-01-end
+
+# Sphinx: plugin-util-variable-url-existent-01-start
+  - name: Define existent url variable.
+    set_fact:
+      existent_url_var: https://is.gd/AuuivH
+# Sphinx: plugin-util-variable-url-existent-01-end
+
+# Sphinx: plugin-util-variable-url-01-start
+  - name: Define non-existent url variable.
+    set_fact:
+      non_existent_url_var: https://constrict0r.readthedocs.io
+# Sphinx: plugin-util-variable-url-01-end
+
+  - name: Define empty collection variable.
+    set_fact:
+      empty_collection_var: []
+
+# Sphinx: plugin-util-variable-collection-01-start
+  - name: Define non-empty collection variable.
+    set_fact:
+      non_empty_collection_var: [one, two]
+# Sphinx: plugin-util-variable-collection-01-end
+
+  - name: Define non-empty nested collection variable.
+    set_fact:
+      non_empty_nested_collection_var: '{upackages: [uleafpad, urolldice]}'
+
+  - name: Test variable_url with non-empty existent.
+    debug:
+      msg: 'Variable is URL'
+    failed_when: existent_url_var is not variable_url
+
+# user_root.
+  - name: Test user_root.
+    debug:
+      msg:
+        - '------------------------------------------------------------------'
+        - 'Testing user_root filter ...'
+        - '------------------------------------------------------------------'
+
+  - name: Test user_root with None.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing user_root with None ...'
+        - '__________________________________________________________________'
+
+  - name: Test user_root with None.
+    debug:
+      msg: 'User can become root'
+    failed_when: None is user_root
+
+  - name: Test user_root with empty.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing user_root with empty ...'
+        - '__________________________________________________________________'
+
+  - name: Test user_root with empty.
+    debug:
+      msg: 'User cannot become root'
+    failed_when: "'' is user_root"
+
+  - name: Test user_root with non-empty non-root.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing user_root with non-empty non-root ...'
+        - '__________________________________________________________________'
+
+# Sphinx: usage-plugin-tasks-01-start
+  - name: Test user_root with non-empty non-root.
+    debug:
+      msg: 'User cannot become root'
+    failed_when: "'nobody' is user_root"
+# Sphinx: usage-plugin-tasks-01-end
+
+  - name: Test user_root with non-empty root.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing user_root with non-empty root ...'
+        - '__________________________________________________________________'
+
+# Sphinx: plugin-util-user-root-01-start
+  - name: Test user_root with non-empty root.
+    debug:
+      msg: 'User can become root'
+    failed_when: "not 'root' is user_root"
+# Sphinx: plugin-util-user-root-01-end
+
+# variable_boolean.
+  - name: Test variable_boolean.
+    debug:
+      msg:
+        - '------------------------------------------------------------------'
+        - 'Testing variable_boolean filter ...'
+        - '------------------------------------------------------------------'
+
+  - name: Test variable_boolean with undefined.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_boolean with undefined ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_boolean with undefined.
+    debug:
+      msg: 'Variable is not boolean'
+    failed_when: undefined_variable is variable_boolean
+
+  - name: Test variable_boolean with null.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_boolean with null ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_boolean with null.
+    debug:
+      msg: 'Variable is not boolean'
+    failed_when: null is variable_boolean
+
+  - name: Test variable_boolean with empty.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_boolean with empty ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_boolean with empty.
+    debug:
+      msg: 'Variable is not boolean'
+    failed_when: empty_var is variable_boolean
+
+  - name: Test variable_boolean with non-empty non-boolean.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_boolean with non-empty non-boolean ...'
+        - '__________________________________________________________________'
+
+
+  - name: Test variable_boolean with non-empty non-boolean.
+    debug:
+      msg: 'Variable is not boolean'
+    failed_when: non_empty_var is variable_boolean
+
+  - name: Test variable_boolean with non-empty boolean false.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_boolean with non-empty boolean false ...'
+        - '__________________________________________________________________'
+
+# Sphinx: plugin-util-variable-boolean-02-start
+  - name: Test variable_boolean with non-empty boolean false.
+    debug:
+      msg: 'Variable is boolean'
+    failed_when: boolean_false_var is not variable_boolean
+# Sphinx: plugin-util-variable-boolean-02-end
+
+  - name: Test variable_boolean with non-empty boolean true.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_boolean with non-empty boolean true ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_boolean with non-empty boolean true.
+    debug:
+      msg: 'Variable is boolean'
+    failed_when: boolean_true_var is not variable_boolean
+
+  - name: Test variable_boolean with non-empty boolean False.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_boolean with non-empty boolean False ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_boolean with non-empty boolean False.
+    debug:
+      msg: 'Variable is boolean'
+    failed_when: False is not variable_boolean
+
+  - name: Test variable_boolean with non-empty boolean True.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_boolean with non-empty boolean True ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_boolean with non-empty boolean True.
+    debug:
+      msg: 'Variable is boolean'
+    failed_when: True is not variable_boolean
+
+  - name: Test variable_boolean with non-empty boolean no.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_boolean with non-empty boolean no ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_boolean with non-empty boolean no.
+    debug:
+      msg: 'Variable is boolean'
+    failed_when: "'no' is not variable_boolean"
+
+  - name: Test variable_boolean with non-empty boolean yes.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_boolean with non-empty boolean yes ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_boolean with non-empty boolean yes.
+    debug:
+      msg: 'Variable is boolean'
+    failed_when: "'yes' is not variable_boolean"
+
+# variable_boolean_true.
+  - name: Test variable_boolean_true.
+    debug:
+      msg:
+        - '------------------------------------------------------------------'
+        - 'Testing variable_boolean_true filter ...'
+        - '------------------------------------------------------------------'
+
+  - name: Test variable_boolean_true with undefined.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_boolean_true with undefined ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_boolean_true with undefined.
+    debug:
+      msg: 'Variable is not boolean true'
+    failed_when: undefined_variable is variable_boolean_true
+
+  - name: Test variable_boolean_true with null.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_boolean_true with null ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_boolean_true with null.
+    debug:
+      msg: 'Variable is not boolean true'
+    failed_when: null is variable_boolean_true
+
+  - name: Test variable_boolean_true with empty.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_boolean_true with empty ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_boolean_true with empty.
+    debug:
+      msg: 'Variable is not boolean true'
+    failed_when: empty_var is variable_boolean_true
+
+  - name: Test variable_boolean_true with non-empty non-boolean.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_boolean_true with non-empty non-boolean ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_boolean_true with non-empty non-boolean.
+    debug:
+      msg: 'Variable is not boolean true'
+    failed_when: non_empty_var is variable_boolean_true
+
+  - name: Test variable_boolean_true with non-empty boolean false.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_boolean_true with non-empty boolean false ...'
+        - '__________________________________________________________________'
+
+# Sphinx: plugin-util-variable-boolean-true-02-start
+  - name: Test variable_boolean_true with non-empty boolean false.
+    debug:
+      msg: 'Variable is not boolean true'
+    failed_when: boolean_false_var is variable_boolean_true
+# Sphinx: plugin-util-variable-boolean-true-02-end
+
+  - name: Test variable_boolean_true with non-empty boolean true.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_boolean_true with non-empty boolean true ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_boolean_true with non-empty boolean true.
+    debug:
+      msg: 'Variable is boolean true'
+    failed_when: boolean_true_var is not variable_boolean_true
+
+  - name: Test variable_boolean_true with non-empty boolean False.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_boolean_true with non-empty boolean False ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_boolean_true with non-empty boolean False.
+    debug:
+      msg: 'Variable is not boolean true'
+    failed_when: False is variable_boolean_true
+
+  - name: Test variable_boolean with non-empty boolean True.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_boolean_true with non-empty boolean True ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_boolean_true with non-empty boolean True.
+    debug:
+      msg: 'Variable is boolean true'
+    failed_when: True is not variable_boolean_true
+
+  - name: Test variable_boolean_true with non-empty boolean no.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_boolean_true with non-empty boolean no ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_boolean_true with non-empty boolean no.
+    debug:
+      msg: 'Variable is not boolean true'
+    failed_when: "'no' is variable_boolean_true"
+
+  - name: Test variable_boolean_true with non-empty boolean yes.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_boolean_true with non-empty boolean yes ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_boolean_true with non-empty boolean yes.
+    debug:
+      msg: 'Variable is boolean true'
+    failed_when: "'yes' is not variable_boolean_true"
+
+# variable_collection.
+  - name: Test variable_collection.
+    debug:
+      msg:
+        - '------------------------------------------------------------------'
+        - 'Testing variable_collection filter ...'
+        - '------------------------------------------------------------------'
+
+  - name: Test variable_collection with undefined.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_collection with undefined ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_collection with undefined.
+    debug:
+      msg: 'Variable is not a collection'
+    failed_when: undefined_variable is variable_collection
+
+  - name: Test variable_collection with defined non-collection.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_collection with defined non-collection ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_collection with defined non-collection.
+    debug:
+      msg: 'Variable is not a collection'
+    failed_when: non_empty_var is variable_collection
+
+  - name: Test variable_collection with null.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_collection with null ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_collection with null.
+    debug:
+      msg: 'Variable is not a collection'
+    failed_when: null is variable_collection
+
+  - name: Test variable_collection with non-null non-collection.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_collection with non-null non-collection ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_collection with non-null non-collection.
+    debug:
+      msg: 'Variable is not a collection'
+    failed_when: non_empty_var is variable_collection
+
+  - name: Test variable_collection with empty.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_collection with empty ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_collection with empty.
+    debug:
+      msg: 'Variable is not a collection'
+    failed_when: empty_var is variable_collection
+
+  - name: Test variable_collection with non-empty.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_collection with non-empty ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_collection with non-empty.
+    debug:
+      msg: 'Variable is not a collection'
+    failed_when: non_empty_var is variable_collection
+
+  - name: Test variable_collection with non-empty boolean false.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_collection with non-empty boolean false ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_collection with non-empty boolean false.
+    debug:
+      msg: 'Variable is not a collection'
+    failed_when: boolean_false_var is variable_collection
+
+  - name: Test variable_collection with non-empty boolean true.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_collection with non-empty boolean true ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_collection with non-empty boolean true.
+    debug:
+      msg: 'Variable is not a collection'
+    failed_when: boolean_true_var is variable_collection
+
+  - name: Test variable_collection with empty collection.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_collection with empty collection ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_collection with empty collection.
+    debug:
+      msg: 'Variable is not a collection'
+    failed_when: empty_collection_var is variable_collection
+
+  - name: Test variable_collection with non-empty collection.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_collection with non-empty collection ...'
+        - '__________________________________________________________________'
+
+# Sphinx: plugin-util-variable-collection-02-start
+  - name: Test variable_collection with non-empty collection.
+    debug:
+      msg: 'Variable is a collection'
+    failed_when: non_empty_collection_var is not variable_collection
+# Sphinx: plugin-util-variable-collection-02-end
+
+# variable_empty.
+  - name: Test variable_empty.
+    debug:
+      msg:
+        - '------------------------------------------------------------------'
+        - 'Testing variable_empty filter ...'
+        - '------------------------------------------------------------------'
+
+  - name: Test variable_empty with undefined.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_empty with undefined ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_empty with undefined.
+    debug:
+      msg: 'Variable is undefined'
+    failed_when: undefined_variable is not variable_empty
+
+  - name: Test variable_empty with null.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_empty with null ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_empty with null.
+    debug:
+      msg: 'Variable is empty'
+    failed_when: null_var is not variable_empty
+
+  - name: Test variable_empty with empty.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_empty with empty ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_empty with empty.
+    debug:
+      msg: 'Variable is empty'
+    failed_when: empty_var is not variable_empty
+
+  - name: Test variable_empty with empty collection.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_empty with empty collection ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_empty with non-empty boolean false.
+    debug:
+      msg: 'Variable is not empty'
+    failed_when: boolean_false_var is variable_empty
+
+  - name: Test variable_empty with non-empty.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_empty with non-empty ...'
+        - '__________________________________________________________________'
+
+# Sphinx: plugin-util-variable-empty-02-start
+  - name: Test variable_empty with non-empty.
+    debug:
+      msg: 'Variable is not empty'
+    failed_when: non_empty_var is variable_empty
+# Sphinx: plugin-util-variable-empty-02-end
+
+  - name: Test variable_empty with non-empty boolean false.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_empty with non-empty boolean false ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_empty with non-empty boolean false.
+    debug:
+      msg: 'Variable is not empty'
+    failed_when: boolean_false_var is variable_empty
+
+  - name: Test variable_empty with non-empty boolean true.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_empty with non-empty boolean true ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_empty with non-empty boolean true.
+    debug:
+      msg: 'Variable is not empty'
+    failed_when: boolean_true_var is variable_empty
+
+  - name: Test variable_empty with non-empty collection.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_empty with non-empty collection ...'
+        - '__________________________________________________________________'
+
+  - name: Test with non-empty collection.
+    debug:
+      msg: 'Variable is not empty'
+    failed_when: non_empty_collection_var is variable_empty
+
+  - name: Test variable_empty with non-empty nested collection.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_empty with non-empty nested collection ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_empty with non-empty nested collection.
+    debug:
+      msg: 'Variable is not empty'
+    failed_when: non_empty_nested_collection_var is variable_empty
+
+# variable_path.
+  - name: Test variable_path.
+    debug:
+      msg:
+        - '------------------------------------------------------------------'
+        - 'Testing variable_path filter ...'
+        - '------------------------------------------------------------------'
+
+  - name: Test variable_path with undefined.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_path with undefined ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_path with undefined.
+    debug:
+      msg: 'Variable is not a path'
+    failed_when: undefined_variable is variable_path
+
+  - name: Test variable_path with defined non-path.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_path with defined non-path ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_path with defined non-path.
+    debug:
+      msg: 'Variable is not a path'
+    failed_when: non_empty_var is variable_path
+
+  - name: Test variable_path with null.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_path with null ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_path with null.
+    debug:
+      msg: 'Variable is not a path'
+    failed_when: null is variable_path
+
+  - name: Test variable_path with non-null non-path.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_path with non-null non-path ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_path with non-null non-path.
+    debug:
+      msg: 'Variable is not a path'
+    failed_when: non_empty_var is variable_path
+
+  - name: Test variable_path with empty.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_path with empty ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_path with empty.
+    debug:
+      msg: 'Variable is not a path'
+    failed_when: empty_var is variable_path
+
+  - name: Test variable_path with non-empty.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_path with non-empty ...'
+        - '__________________________________________________________________'
+
+# Sphinx: plugin-util-variable-path-02-start
+  - name: Test variable_path with non-empty.
+    debug:
+      msg: 'Variable is a path'
+    failed_when: path_var is not variable_path
+# Sphinx: plugin-util-variable-path-02-end
+
+  - name: Test variable_path with non-empty boolean false.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_path with non-empty boolean false ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_path with non-empty boolean false.
+    debug:
+      msg: 'Variable is not a path'
+    failed_when: boolean_false_var is variable_path
+
+  - name: Test variable_path with non-empty boolean true.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_path with non-empty boolean true ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_path with non-empty boolean true.
+    debug:
+      msg: 'Variable is not a path'
+    failed_when: boolean_true_var is variable_path
+
+  - name: Test variable_path with empty collection.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_path with empty collection ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_path with empty collection.
+    debug:
+      msg: 'Variable is not a path'
+    failed_when: empty_collection_var is variable_path
+
+  - name: Test variable_path with non-empty collection.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_path with non-empty collection ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_path with non-empty collection.
+    debug:
+      msg: 'Variable is not a path'
+    failed_when: non_empty_collection_var is variable_path
+
+# variable_url.
+  - name: Test variable_url.
+    debug:
+      msg:
+        - '------------------------------------------------------------------'
+        - 'Testing variable_url filter ...'
+        - '------------------------------------------------------------------'
+
+  - name: Test variable_url with undefined.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_url with undefined ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_url with undefined.
+    debug:
+      msg: 'Variable is not URL'
+    failed_when: undefined_variable is variable_url
+
+  - name: Test variable_url with defined non-url.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_url with defined non-url ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_url with defined non-url.
+    debug:
+      msg: 'Variable is not URL'
+    failed_when: non_empty_var is variable_url
+
+  - name: Test variable_url with null.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_url with null ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_url with null.
+    debug:
+      msg: 'Variable is not URL'
+    failed_when: null is variable_url
+
+  - name: Test variable_url with non-null non-url.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_url with non-null non-url ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_url with non-null non-url.
+    debug:
+      msg: 'Variable is not URL'
+    failed_when: non_empty_var is variable_url
+
+  - name: Test variable_url with empty.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_url with empty ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_url with empty.
+    debug:
+      msg: 'Test with empty'
+    failed_when: empty_var is variable_url
+
+  - name: Test variable_url with non-empty unexistent.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_url with non-empty unexistent ...'
+        - '__________________________________________________________________'
+
+# Sphinx: plugin-util-variable-url-02-start
+  - name: Test variable_url with non-empty unexistent.
+    debug:
+      msg: 'Variable is URL'
+    failed_when: non_existent_url_var is not variable_url
+# Sphinx: plugin-util-variable-url-02-end
+
+  - name: Test variable_url with non-empty existent.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_url with non-empty existent ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_url with non-empty existent.
+    debug:
+      msg: 'Variable is URL'
+    failed_when: existent_url_var is not variable_url
+
+# variable_url_existent.
+  - name: Test variable_url_existent.
+    debug:
+      msg:
+        - '------------------------------------------------------------------'
+        - 'Testing variable_url_existent filter ...'
+        - '------------------------------------------------------------------'
+
+  - name: Test variable_url_existent with undefined.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_url_existent with undefined ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_url_existent with undefined.
+    debug:
+      msg: 'Variable is not URL'
+    failed_when: undefined_variable is variable_url_existent
+
+  - name: Test variable_url_existent with defined non-url.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_url_existent with defined non-url ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_url_existent with defined non-url.
+    debug:
+      msg: 'Variable is not URL'
+    failed_when: non_empty_var is variable_url_existent
+
+  - name: Test variable_url_existent with null.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_url_existent with null ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_url_existent with null.
+    debug:
+      msg: 'Variable is not URL'
+    failed_when: null is variable_url_existent
+
+  - name: Test variable_url_existent with non-null non-url.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_url_existent with non-null non-url ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_url_existent with non-null non-url.
+    debug:
+      msg: 'Variable is not URL'
+    failed_when: non_empty_var is variable_url_existent
+
+  - name: Test variable_url_existent with empty.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_url_existent with empty ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_url_existent with empty.
+    debug:
+      msg: 'Test with empty'
+    failed_when: empty_var is variable_url_existent
+
+  - name: Test variable_url_existent with non-empty unexistent.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_url_existent with non-empty unexistent ...'
+        - '__________________________________________________________________'
+
+  - name: Test variable_url_existent with non-empty unexistent.
+    debug:
+      msg: 'Variable is not URL'
+    failed_when: non_existent_url_var is variable_url_existent
+
+  - name: Test variable_url_existent with non-empty existent.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing variable_url_existent with non-empty existent ...'
+        - '__________________________________________________________________'
+
+# Sphinx: plugin-util-variable-url-existent-02-start
+  - name: Test variable_url_existent with non-empty existent.
+    debug:
+      msg: 'Variable is URL'
+    failed_when: existent_url_var is not variable_url_existent
+# Sphinx: plugin-util-variable-url-existent-02-end

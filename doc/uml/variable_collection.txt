@@ -1,0 +1,28 @@
+@startuml
+'Use plantuml to view this file as an image: http://plantuml.com'
+
+skinparam monochrome true
+
+start
+
+if (value is not empty?) then (yes)
+
+  if (value is Sequence) then (yes)
+
+    if (value match collection_regex?) then (yes)
+      :Return True;
+
+    else (no)
+    endif
+
+  else (no)
+  endif
+
+else (no)
+endif
+
+:Return False;
+
+end
+
+@enduml

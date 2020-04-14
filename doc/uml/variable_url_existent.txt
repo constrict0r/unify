@@ -1,0 +1,40 @@
+@startuml
+'Use plantuml to view this file as an image: http://plantuml.com'
+
+skinparam monochrome true
+
+start
+
+if (value is not empty?) then (yes)
+
+  if (value is not collection) then (yes)
+
+    if (value is not boolean?) then (yes)
+
+      if (value is URL?) then (yes)
+
+         :Make request to URL;
+
+         if (request.status == 200) then (yes)
+           :Return True;
+
+         else (no)
+         endif
+
+      else (no)
+      endif
+
+    else (no)
+    endif
+
+  else (no)
+  endif
+
+else (no)
+endif
+
+:Return False;
+
+end
+
+@enduml

@@ -1,0 +1,32 @@
+@startuml
+'Use plantuml to view this file as an image: http://plantuml.com'
+
+skinparam monochrome true
+
+start
+
+if (value is not empty?) then (yes)
+
+  if (value is not collection) then (yes)
+
+    if (value.lower is true or yes?) then (yes)
+      :Return True;
+    else (no)
+    endif
+
+    if (value.lower is false or no?) then (yes)
+      :Return True;
+    else (no)
+    endif
+
+  else (no)
+  endif
+
+else (no)
+endif
+
+:Return False;
+
+end
+
+@enduml

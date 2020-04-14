@@ -1,0 +1,75 @@
+@startuml
+'Use plantuml to view this file as an image: http://plantuml.com'
+start
+
+skinparam monochrome true
+
+:Setup requirements;
+
+if (validate == true?) then (yes)
+  :Apply validations;
+else (no)
+endif
+
+if (update == true?) then (yes)
+  :Update apt cache;
+else (no)
+endif
+
+if (upgrade == true?) then (yes)
+  :Full upgrade the system;
+else (no)
+endif
+
+if (secondary == true?) then (yes)
+
+  :Set unified_b = [];
+
+  repeat
+    :read item_b;
+
+    if (item_b is existent URL?) then (yes)
+      :Download item_b;
+    else (no)
+    endif
+
+    if (item_b is existent file path?) then (yes)
+
+      if (expand_b and titles_b not empty?) then (yes)
+        :Load item_b[titles_b];
+      else (no)
+      endif
+
+      :Add item_b to unified_b;
+    else (no)
+    endif
+
+  repeat while (items_b not empty?)
+
+else (no)
+endif
+
+repeat
+  :read item;
+
+  if (item_b is existent URL?) then (yes)
+    :Download item_b;
+  else (no)
+  endif
+
+  if (item is existent file path?) then (yes)
+
+    if (expand and title not empty?) then (yes)
+      :Load item[titles];
+    else (no)
+    endif
+
+    :Add item to unified;
+  else (no)
+  endif
+
+repeat while (items not empty?)
+
+end
+
+@enduml

@@ -1,0 +1,22 @@
+@startuml
+'Use plantuml to view this file as an image: http://plantuml.com'
+
+skinparam monochrome true
+
+start
+
+if (value is variable_boolean?) then (yes)
+
+  if (value.lower is true or yes?) then (yes)
+    :Return True;
+  else (no)
+  endif
+
+else (no)
+endif
+
+:Return False;
+
+end
+
+@enduml

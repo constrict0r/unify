@@ -1,0 +1,39 @@
+@startuml
+'Use plantuml to view this file as an image: http://plantuml.com'
+start
+
+skinparam monochrome true
+
+:Set a = [];
+
+if (items not empty?) then (yes)
+  :Set a = items;
+else (no)
+endif
+
+:Set b = [];
+
+if (items_b not empty?) then (yes)
+  :Set b = items_b;
+else (no)
+endif
+
+:Set e = false;
+
+if (expand?) then (yes)
+  :Set e = true;
+else (no)
+endif
+
+:Set t = '';
+
+if (title not empty?) then (yes)
+  :Set t = title;
+else (no)
+endif
+
+:Unified = a + b;
+
+end
+
+@enduml

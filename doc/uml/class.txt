@@ -1,0 +1,37 @@
+@startuml
+'Use plantuml to view this file as an image: http://plantuml.com'
+
+skinparam monochrome true
+
+class TestModule {
+
+  dict tests()
+  bool user_root(username)
+  bool variable_boolean(value)
+  bool variable_boolean_true(value)
+  bool variable_collection(value)
+  bool variable_empty(value)
+  bool variable_path(value)
+  bool variable_url(value)
+  bool variable_url_existent(value)
+
+}
+
+class Unify {
+
+  bool variable_boolean(value)
+  bool variable_boolean_value(value)
+  bool variable_collection(value)
+  bool variable_empty(value)
+  bool variable_path(value)
+  bool variable_url(value)
+  bool variable_url_existent(value)
+  run_module()
+  unify_collection(collection, unified, titles, expand)
+  unify_item(item, unified, titles, expand)
+  main()
+  __name__()
+
+}
+
+@enduml

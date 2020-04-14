@@ -1,0 +1,15 @@
+ansible
+coverage
+Jinja2
+molecule[docker]
+pytest
+pytest-cov
+python-coveralls
+PyYAML
+requests
+setuptools
+sphinxcontrib-restbuilder
+sphinxcontrib-globalsubs
+sphinx-prompt
+Sphinx-Substitution-Extensions
+sphinx_rtd_theme

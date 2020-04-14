@@ -1,0 +1,47 @@
+---
+# Tasks to handle variables.
+
+- name: Handle variables.
+  debug:
+    msg:
+      - '--------------------------------------------------------------------'
+      - "Handling variables ..."
+      - '--------------------------------------------------------------------'
+
+- name: Handle validate variable.
+  debug:
+    msg:
+      - '____________________________________________________________________'
+      - 'Handling validation ...'
+      - '____________________________________________________________________'
+
+- name: Copy validate variable.
+  include_tasks: copy.yml
+  vars:
+    variable_name: 'validate'
+    variable_value: "{{ validate | default(false) }}"
+
+- name: Validate when required.
+  include_tasks: validate.yml
+  when:
+    - variable_copy is not variable_empty
+    - variable_copy is variable_boolean_true
+
+- name: Handle update variable.
+  debug:
+    msg:
+      - '____________________________________________________________________'
+      - 'Handling update ...'
+      - '____________________________________________________________________'
+
+- name: Copy update variable.
+  include_tasks: copy.yml
+  vars:
+    variable_name: 'update'
+    variable_value: "{{ update | default(false) }}"
+
+- name: Update apt when required.
+  include_tasks: update.yml
+  when:
+    - variable_copy is not variable_empty
+    - variable_copy is variable_boolean_true

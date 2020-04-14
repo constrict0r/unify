@@ -1,0 +1,28 @@
+---
+galaxy_info:
+  author: constrict0r
+  description: Unify collections into a single unified_collection.
+  company: Amanita.
+
+  license: MIT.
+
+  min_ansible_version: 2.8
+
+  platforms:
+    - name: Debian
+      versions:
+        - stretch
+        - buster
+
+    - name: Ubuntu
+      versions:
+        - xenial
+
+  galaxy_tags:
+    - auto
+    - autodebian
+    - debian
+    - devops
+    - doombots
+    - linux
+    - ubuntu

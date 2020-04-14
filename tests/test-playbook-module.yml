@@ -1,0 +1,317 @@
+---
+# Unify tests, from root folder run: ./testme.sh.
+
+- name: Ansible module to unify collections - tests.
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+# Setup.
+  - name: Setup requirements.
+    debug:
+      msg:
+        - '------------------------------------------------------------------'
+        - 'Setting up requirements ...'
+        - '------------------------------------------------------------------'
+
+  - name: Install python requets.
+    apt:
+      name:
+        - python-requests
+        - python3-requests
+
+  - name: Downloading files.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Downloading files ...'
+        - '__________________________________________________________________'
+
+  - name: Download example-repositories.yml file.
+    get_url:
+      url: https://is.gd/vVdEsO
+      dest: /tmp/example-repositories.yml
+      force: true
+
+  - name: Download example-packages.yml file.
+    get_url:
+      url: https://is.gd/DURNzh
+      dest: /tmp/example-packages.yml
+      force: true
+
+  - name: Download example-packages-b.yml file.
+    get_url:
+      url: https://is.gd/yq21Ck
+      dest: /tmp/example-packages-b.yml
+      force: true
+
+  - name: Define variables.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Defining variables ...'
+        - '__________________________________________________________________'
+
+  - name: Set a.
+    set_fact:
+      a: [one, two]
+
+  - name: Set b.
+    set_fact:
+      b: [three, four]
+
+  - name: Set repositories.
+    set_fact:
+      repositories: [{name: multimedia,
+        repo: 'deb http://www.debian-multimedia.org sid main'}]
+
+  - name: Set packages.
+    set_fact:
+      packages: [gedit, make]
+
+# Unify module.
+  - name: Test unify module.
+    debug:
+      msg:
+        - '------------------------------------------------------------------'
+        - 'Testing unify module ...'
+        - '------------------------------------------------------------------'
+
+  - name: Test unify module with null.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing unify module with null ...'
+        - ' ,xXXXXx'
+        - ',XXXXXXXX'
+        - 'XXXXXXXXXX'
+        - '````XX```'
+        - '    XX'
+        - '    XX'
+        - '    XX'
+        - '__________________________________________________________________'
+
+  - name: Unify - test with null.
+    unify:
+      items: null
+      titles: null
+    register: unified_register
+    failed_when:
+      - unified_register.unified is not defined
+      - not unified_register.unified == []
+
+  - name: Test unify module with none.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing unify module with none ...'
+        - '   __.......__'
+        - ' .`           `.'
+        - ':               :'
+        - ':               :'
+        - ' `.._________..`'
+        - '      :   :'
+        - '      :   :'
+        - '      :   :'
+        - '      `...`'
+        - '__________________________________________________________________'
+
+  - name: Unify - test with none.
+    unify:
+      items: null
+      titles: null
+    register: unified_register
+    failed_when:
+      - unified_register.unified is not defined
+      - not unified_register.unified == []
+
+  - name: Test unify module with empty.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing unify module with empty ...'
+        - '        __....._' 
+        - '     .``         ``' 
+        - '   ."               `'  
+        - '  .                   ' 
+        - ' .       __...__       '
+        - '. _.--```       ```--._ '
+        - ':`                     `'
+        - ' `-.__    :    :   __.-`'
+        - '      ```-:    :-```' 
+        - '         J     '
+        - '         :     '
+        - '        J       '
+        - '        :       '
+        - '        `._____.'
+        - '__________________________________________________________________'
+
+  - name: Unify - test with empty.
+    unify:
+      items: ''
+      titles: ''
+    register: unified_register
+    failed_when:
+      - unified_register.unified is not defined
+      - not unified_register.unified == []
+
+  - name: Test unify module with NON-empty.
+    debug:
+      msg:
+        - '__________________________________________________________________'
+        - 'Testing unify module with NON-empty ...'
+        - '        __....._'
+        - '     .`` _  o    ``'
+        - '   ." O (_)     () o`'
+        - '  .           O        '
+        - ' . ()   o__...__    O   '
+        - '. _.--```       ```--._ '
+        - ':`                     `'
+        - ' `-.__    :    :   __.-`'
+        - '      ```-:    :-```'
+        - '         J     '
+        - '         :     '
+        - '        J       '
+        - '        :       '
+        - '        `._____.'
+        - '__________________________________________________________________'
+
+  - name: Unify - unexisting file, unexisting titles.
+    unify:
+      items: [/home/username/unexistent.yml]
+      titles: unexistent
+      expand: true
+    register: unified_register
+    failed_when:
+      - unified_register.unified is not defined
+      - not unified_register.unified == []
+
+  - name: Unify collections - existing file, unexisting titles.
+    unify:
+      items: [/tmp/example-repositories.yml]
+      titles: 'packages'
+      expand: true
+    register: unified_register
+    failed_when:
+      - unified_register.unified is not defined
+      - not unified_register.unified == []
+
+  - name: Unify - existing file, existing titles.
+    unify:
+      items: [/tmp/example-packages.yml]
+      titles: packages
+      expand: true
+    register: unified_register
+    failed_when:
+      - unified_register.unified is not defined
+      - unified_register.unified is not search('rolldice')
+
+  - name: Unify existent files - existent title - unexistent title.
+    unify:
+      items: [/tmp/example-packages.yml,
+          /tmp/example-packages-b.yml]
+      titles: [packages, repositories]
+      expand: true
+    register: unified_register
+    failed_when:
+      - unified_register.unified is not defined
+      - unified_register.unified == []
+
+  - name: Unify existent files - unexistent title.
+    unify:
+      items: [/tmp/example-packages.yml,
+          /tmp/example-packages-b.yml]
+      titles: repositories
+      expand: true
+    register: unified_register
+    failed_when:
+      - unified_register.unified is not defined
+      - not unified_register.unified == []
+
+  - name: Unify existent files - existent title.
+    unify:
+      items: [/tmp/example-packages.yml,
+        /tmp/example-packages-b.yml]
+      titles: packages
+      expand: true
+      register: unified_register
+    failed_when:
+      - unified_register.unified is not defined
+      - unified_register.unified == []
+
+  - name: Unify two non-empty non-variable collections.
+    unify:
+      items: [[one, two], [three, four]]
+      titles: []
+      expand: false
+    register: unified_register
+    failed_when:
+      - unified_register.unified is not defined
+      - unified_register.unified is search('three')
+
+  - name: Unify existing mixed collections - existing title.
+    unify:
+      items: ["{{ a }}", "{{ b }}", [five, six], [seven, eight],
+          /tmp/example-packages.yml]
+      titles: packages
+    register: unified_register
+    failed_when:
+      - unified_register.unified is not defined
+      - unified_register.unified is search('three')
+
+  - name: Unify exist mixed collections with multiple files - existing title.
+    unify:
+      items: ["{{ a }}", "{{ b }}", [five, six], [seven, eight],
+          /tmp/example-packages.yml, /tmp/example-packages-b.yml]
+      titles: packages
+      expand: true
+    register: unified_register
+    failed_when:
+      - unified_register.unified is not defined
+      - unified_register.unified is search('emacs')
+      - unified_register.unified is search('jed')
+      - unified_register.unified is search('leafpad')
+      - unified_register.unified is search('three')
+
+  - name: Unify existing mixed collections with multiple files - using URL.
+    unify:
+      items:
+        - https://is.gd/yG9QSC
+        - https://is.gd/QHthBA
+      titles: packages
+      expand: true
+    register: unified_register
+    failed_when:
+      - unified_register.unified is not defined
+      - unified_register.unified is search('leafpad')
+      - unified_register.unified is search('rolldice')
+      - unified_register.unified is search('emacs')
+      - unified_register.unified is search('jed')
+
+  - name: Unify with existing recursive URL.
+    unify:
+      items: https://is.gd/E7kxYm
+      titles: packages
+      expand: true
+    register: unified_register
+    failed_when:
+      - unified_register.unified is not defined
+      - unified_register.unified is search('apt-transport-https')
+      - unified_register.unified is search('audacity')
+
+# Cleanup files.
+  - name: Cleanup /tmp/example-repositories.yml file.
+    file:
+      path: /tmp/example-repositories.yml
+      state: absent
+
+  - name: Cleanup /tmp/example-packages.yml file.
+    file:
+      path: /tmp/example-packages.yml
+      state: absent
+
+  - name: Cleanup /tmp/example-packages-b.yml file.
+    file:
+      path: /tmp/example-packages-b.yml
+      state: absent
