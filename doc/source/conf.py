@@ -76,8 +76,7 @@ global_substitutions = {
     + "\n   :alt: coverage_gitlab",
     "COVERALLS_LINK": "`Coveralls <" + gh_cover_link + ">`_",
     "DEFAULT_VAR_NAME": 'items',
-    "DEPLOY_IMG": ".. image:: " + img_url +
-    "/deploy.png\n   :alt: deploy",
+    "DEPLOY_IMG": ".. image:: " + img_url + "/deploy.png\n   :alt: deploy",
     "DOOMBOT_IMG": ".. image:: " + img_url + "/doombot.png\n   :alt: doombot",
     "ENJOY_IMG": ".. image:: " + img_url + "/enjoy.png\n   :alt: enjoy",
     "GITLAB_BADGE":  ".. image:: " + gitlab_badge,
