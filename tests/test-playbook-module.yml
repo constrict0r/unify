@@ -42,7 +42,7 @@
 
   - name: Download example-packages-b.yml file.
     get_url:
-      url: https://is.gd/lJRVjE
+      url: https://is.gd/iN07fl
       dest: /tmp/example-packages-b.yml
       force: true
 
