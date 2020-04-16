@@ -24,13 +24,13 @@
 
   - name: Download example-conf.yml file.
     get_url:
-      url: https://is.gd/zF7jzp
+      url: https://is.gd/mgDWWk
       dest: /tmp/example-conf.yml
       force: true
 
   - name: Download example-conf-b.yml file.
     get_url:
-      url: https://is.gd/8RGMvO
+      url: https://is.gd/iN07fl
       dest: /tmp/example-conf-b.yml
       force: true
 
@@ -134,15 +134,15 @@
       msg:
         - '..................................................................'
         - 'Testing unify role with empty ...'
-        - '        __....._' 
-        - '     .``         ``' 
-        - '   ."               `'  
-        - '  .                   ' 
+        - '        __....._'
+        - '     .``         ``'
+        - '   ."               `'
+        - '  .                   '
         - ' .       __...__       '
         - '. _.--```       ```--._ '
         - ':`                     `'
         - ' `-.__    :    :   __.-`'
-        - '      ```-:    :-```' 
+        - '      ```-:    :-```'
         - '         J     '
         - '         :     '
         - '        J       '
@@ -282,8 +282,8 @@
       validate: false
       update: false
       items:
-        - https://is.gd/zF7jzp
-        - https://is.gd/8RGMvO
+        - https://is.gd/mgDWWk
+        - https://is.gd/iN07fl
       titles: items
       expand: true
       secondary: false
@@ -335,7 +335,7 @@
       items_b:
         - [1, 2, 3]
         - [4, 5, 6]
-        - https://is.gd/8RGMvO
+        - https://is.gd/iN07fl
       titles_b: items
       expand_b: true
     become: true
@@ -381,14 +381,14 @@
     vars:
       validate: false
       update: false
-      items: https://is.gd/zF7jzp
+      items: https://is.gd/mgDWWk
       expand: false
       secondary: false
 
   - name: Verify URL added to collection.
     command: "echo {{ unified }}"
     register: unified_result
-    failed_when: unified_result.stdout is not search('https://is.gd/zF7jzp')
+    failed_when: unified_result.stdout is not search('https://is.gd/mgDWWk')
 
   - name: Test unify role with non-empty - expand items.
     debug:
@@ -416,7 +416,7 @@
     vars:
       validate: false
       update: false
-      items: https://is.gd/8RGMvO
+      items: https://is.gd/iN07fl
       titles: items
       expand: true
       secondary: false
@@ -457,7 +457,7 @@
       validate: false
       update: false
       items:
-        - item_path: https://is.gd/zF7jzp
+        - item_path: https://is.gd/mgDWWk
           item_expand: false
       expand: true
       secondary: false
@@ -466,7 +466,7 @@
     command: "echo {{ unified }}"
     register: unified_result
     failed_when:
-      - unified_result.stdout is not search('https://is.gd/zF7jzp')
+      - unified_result.stdout is not search('https://is.gd/mgDWWk')
       - unified_result.stdout is search('expand')
 
   - name: Test unify role with non-empty - expand item - not global.
@@ -503,7 +503,7 @@
       validate: false
       update: false
       items:
-        - item_path: https://is.gd/zF7jzp
+        - item_path: https://is.gd/mgDWWk
           item_expand: true
       titles: items
       expand: false

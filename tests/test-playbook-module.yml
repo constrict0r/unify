@@ -30,19 +30,19 @@
 
   - name: Download example-repositories.yml file.
     get_url:
-      url: https://is.gd/vVdEsO
+      url: https://is.gd/lORPOB
       dest: /tmp/example-repositories.yml
       force: true
 
   - name: Download example-packages.yml file.
     get_url:
-      url: https://is.gd/DURNzh
+      url: https://is.gd/DfMmuf
       dest: /tmp/example-packages.yml
       force: true
 
   - name: Download example-packages-b.yml file.
     get_url:
-      url: https://is.gd/yq21Ck
+      url: https://is.gd/lJRVjE
       dest: /tmp/example-packages-b.yml
       force: true
 
@@ -131,15 +131,15 @@
       msg:
         - '__________________________________________________________________'
         - 'Testing unify module with empty ...'
-        - '        __....._' 
-        - '     .``         ``' 
-        - '   ."               `'  
-        - '  .                   ' 
+        - '        __....._'
+        - '     .``         ``'
+        - '   ."               `'
+        - '  .                   '
         - ' .       __...__       '
         - '. _.--```       ```--._ '
         - ':`                     `'
         - ' `-.__    :    :   __.-`'
-        - '      ```-:    :-```' 
+        - '      ```-:    :-```'
         - '         J     '
         - '         :     '
         - '        J       '
@@ -277,8 +277,8 @@
   - name: Unify existing mixed collections with multiple files - using URL.
     unify:
       items:
-        - https://is.gd/yG9QSC
-        - https://is.gd/QHthBA
+        - https://is.gd/8FsLoU
+        - https://is.gd/EqwfqX
       titles: packages
       expand: true
     register: unified_register
