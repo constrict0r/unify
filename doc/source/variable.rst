@@ -24,7 +24,7 @@ items
 expand
 ..............................................................
 
-.. include:: part/variable/expand.inc
+.. include:: variable/expand.inc
 
 titles
 ..............................................................
