@@ -268,7 +268,7 @@ This variable is set to *false* by default.
          validate: false
 
    # To a playbook from terminal.
-   ansible-playbook -i tests/inventory tests/test-playbook.yml -K -e \
+   ansible-playbook -i inventory my-playbook.yml -K -e \
        "validate=false"
 
 To prevent any unexpected behaviour, it is recommended to always
@@ -297,7 +297,7 @@ This variable is set to *false* by default.
          update: false
 
    # To a playbook from terminal.
-   ansible-playbook -i tests/inventory tests/test-playbook.yml -K -e \
+   ansible-playbook -i inventory my-playbook.yml -K -e \
        "update=false"
 
 To prevent any unexpected behaviour, it is recommended to always
