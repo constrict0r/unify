@@ -23,7 +23,8 @@
     state: present
   become: false
   changed_when: false
-  check_mode: false
+  delegate_to: localhost
+  when: not ansible_check_mode
 
 - name: Handle variables.
   include_tasks: variable.yml

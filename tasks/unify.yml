@@ -89,6 +89,7 @@
   register: unified_register
   become: false
   changed_when: false
+  delegate_to: localhost
   failed_when: unified_register.unified is not defined
 
 - name: Set unified variable.
