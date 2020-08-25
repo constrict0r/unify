@@ -11,22 +11,28 @@
           - 'Pre tasks'
           - '==============================================================='
 
+
+    - name: Update APT cache.
+      apt: update_cache=yes cache_valid_time=3600
+      when: ansible_pkg_mgr == 'apt'
+
     - name: Ensure Python requirements installed.
-      apt:
+      package:
         name:
+          - python-apt
           - python
           - python-pip
           - python-setuptools
           - python3-pip
           - python3-setuptools
         state: present
+      become: true
 
     - name: Ensure Pip requirements installed.
       pip:
         name:
           - flake8
           - requests
-      become: false
       changed_when: false
 
   roles:

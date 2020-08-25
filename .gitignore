@@ -53,6 +53,7 @@ lib64
 var
 sdist
 pip-log.txt
+Pipfile
 *.pyc
 *.py[cod]
 __pycache__
