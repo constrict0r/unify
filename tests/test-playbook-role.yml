@@ -5,6 +5,7 @@
   hosts: localhost
   connection: local
   gather_facts: false
+  become: true
 
   tasks:
 # Setup.
@@ -250,7 +251,6 @@
       expand: true
       secondary: false
     failed_when: unified is variable_empty
-    become: yes
 
   - name: Verify calyptroderma added to collections.
     command: "echo {{ unified }}"
@@ -287,7 +287,6 @@
       titles: items
       expand: true
       secondary: false
-    become: true
     failed_when: unified is variable_empty
 
   - name: Verify bisporigera added to collection.
@@ -338,7 +337,6 @@
         - https://is.gd/iN07fl
       titles_b: items
       expand_b: true
-    become: true
     failed_when: unified_b is variable_empty
 
   - name: Verify calyptroderma added to collection B.
@@ -420,7 +418,6 @@
       titles: items
       expand: true
       secondary: false
-    become: true
 
   - name: Verify calyptroderma added to collection.
     command: "echo {{ unified }}"
@@ -590,7 +587,6 @@
       items: []
       expand: false
       secondary: false
-    become: true
 
 # Cleanup files.
   - name: Cleanup /tmp/example-conf.yml file.
