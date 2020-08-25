@@ -21,9 +21,7 @@
       - PyYAML
       - requests
     state: present
-  become: false
   changed_when: false
-  delegate_to: localhost
   when: not ansible_check_mode
 
 - name: Handle variables.
