@@ -21,6 +21,9 @@
       - python3-pip
   when: not ansible_check_mode
 
+- debug:
+    var: ansible_python_version
+
 - name: Ensure Python requirements installed.
   pip:
     name:
