@@ -50,8 +50,8 @@
   register: result
   retries: 2
   until: result is success
-  become: true
   changed_when: false
+  become: true
   when: "'root' != username_current_whoami.stdout"
 
 - name: Ensure sudo package is installed as root.
@@ -81,6 +81,7 @@
     mode: 0440
     create: true
   when: "'root' == username_current_whoami.stdout"
+  changed_when: false
 
 - name: Add current user to sudoers.d using become.
   lineinfile:

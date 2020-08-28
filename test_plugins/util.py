@@ -190,6 +190,7 @@ class TestModule(object):
         except ValueError:    # pragma: no cover
             return True  # pragma: no cover
 
+
         if text_value == 'None':
             return True  # pragma: no cover
 

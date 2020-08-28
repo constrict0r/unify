@@ -14,13 +14,19 @@
       - 'Verifying requirements ...'
       - '____________________________________________________________________'
 
-- name: Verify requirements installed - Jinja2, PyYAML, requests.
+
+- name: Ensure APT requirements installed.
+  package:
+    name:
+      - python3-pip
+  when: not ansible_check_mode
+
+- name: Ensure Python requirements installed.
   pip:
     name:
       - Jinja2
       - PyYAML
       - requests
-    state: present
   changed_when: false
   when: not ansible_check_mode
 
