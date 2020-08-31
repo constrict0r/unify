@@ -14,5 +14,4 @@
   register: result
   retries: 2
   until: result is success
-  become: true
   changed_when: false

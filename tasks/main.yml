@@ -16,10 +16,9 @@
 
 
 - name: Ensure APT requirements installed.
-  package:
+  apt:
     name:
       - python3-pip
-  delegate_to: localhost
   when: not ansible_check_mode
 
 - name: Ensure Python requirements installed.
@@ -29,7 +28,6 @@
       - PyYAML
       - requests
   changed_when: false
-  delegate_to: localhost
   when: not ansible_check_mode
 
 - name: Handle variables.

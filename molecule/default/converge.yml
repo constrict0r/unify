@@ -12,13 +12,12 @@
           - '==============================================================='
 
     - name: Update APT cache.
-      apt: update_cache=yes cache_valid_time=3600
-      when: ansible_pkg_mgr == 'apt'
+      command: apt update
+      changed_when: false
 
     - name: Ensure Python requirements installed.
-      package:
+      apt:
         name:
-          - python-apt
           - python
           - python-pip
           - python-setuptools
@@ -64,4 +63,4 @@
       command: flake8 --version
       register: lint_version
       changed_when: false
-      failed_when: '"pyflakes" not in lint_version.stdout'
+      failed_when: lint_version is not search('pyflakes')

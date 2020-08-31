@@ -15,7 +15,7 @@
         - 'Setting up requirements ...'
         - '------------------------------------------------------------------'
 
-  - name: Install python requets.
+  - name: Install python requests.
     apt:
       name:
         - python-requests
