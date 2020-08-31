@@ -12,7 +12,11 @@
           - '==============================================================='
 
     - name: Update APT cache.
-      command: apt update
+      apt:
+        update_cache: true
+      register: result
+      retries: 2
+      until: result is success
       changed_when: false
 
     - name: Ensure Python requirements installed.
