@@ -19,10 +19,8 @@
   package:
     name:
       - python3-pip
+  delegate_to: localhost
   when: not ansible_check_mode
-
-- debug:
-    var: ansible_python_version
 
 - name: Ensure Python requirements installed.
   pip:
@@ -31,6 +29,7 @@
       - PyYAML
       - requests
   changed_when: false
+  delegate_to: localhost
   when: not ansible_check_mode
 
 - name: Handle variables.
