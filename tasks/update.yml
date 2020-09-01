@@ -8,9 +8,8 @@
       - 'Updating apt cache ...'
       - '--------------------------------------------------------------------'
 
-- name: Update the apt cache.
-  apt:
-    update_cache: true
+- name: Update APT cache.
+  command: apt update
   register: result
   retries: 2
   until: result is success

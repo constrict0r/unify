@@ -12,8 +12,7 @@
           - '==============================================================='
 
     - name: Update APT cache.
-      apt:
-        update_cache: true
+      command: apt update
       register: result
       retries: 2
       until: result is success
