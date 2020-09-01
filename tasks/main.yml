@@ -14,7 +14,6 @@
       - 'Verifying requirements ...'
       - '____________________________________________________________________'
 
-
 - name: Ensure APT requirements installed.
   apt:
     name:

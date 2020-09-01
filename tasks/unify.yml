@@ -89,7 +89,9 @@
   register: unified_register
   changed_when: false
   failed_when: unified_register.unified is not defined
+  when: not ansible_check_mode
 
 - name: Set unified variable.
   set_fact:
     unified: "{{ unified_register.unified }}"
+  when: not ansible_check_mode
